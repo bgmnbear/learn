@@ -2,3 +2,4 @@ Python/Django/.idea/
 Python/SICP/.idea/
 Python/Django/venv/
 *.pyc
+*.sqlite3
