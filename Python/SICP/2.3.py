@@ -55,3 +55,34 @@ print((2, 7) + digits * 2)
 
 alternates = (-1, 2, -3, 4, -5)
 print(tuple(map(abs, alternates)))
+
+
+# Sequence iteration
+def count(s, value):
+    """Count the number of occurrences of value in sequence s."""
+    total, index = 0, 0
+    while index < len(s):
+        if s[index] == value:
+            total = total + 1
+        index = index + 1
+    return total
+
+
+print(count(digits, 8))
+
+pairs = ((1, 2), (2, 2), (2, 3), (4, 4))
+
+same_count = 0
+for x, y in pairs:
+    if x == y:
+        same_count = same_count + 1
+
+print(same_count)
+
+print(tuple(range(5, 8)))
+
+for _ in range(3):
+    print('Go Bears!')
+
+
+# String
