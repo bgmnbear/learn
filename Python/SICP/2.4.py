@@ -43,7 +43,6 @@ nest[0] = suits
 suits.insert(2, 'Joker')
 print(nest)
 
-
 # def make_mutable_rlist():
 #     """Return a functional implementation of a mutable recursive list."""
 #     contents = empty_rlist
@@ -72,3 +71,46 @@ print(nest)
 #     for element in reversed(source):
 #         s('push_first', element)
 #     return s
+
+
+# Dict
+print(dict([(3, 9), (4, 16), (5, 25)]))
+
+
+def make_dict():
+    """Return a functional implementation of a dictionary."""
+    records = []
+
+    def getitem(key):
+        for k, v in records:
+            if k == key:
+                return v
+
+    def setitem(key, value):
+        for item in records:
+            if item[0] == key:
+                item[1] = value
+                return
+        records.append([key, value])
+
+    def dispatch(message, key=None, value=None):
+        if message == 'getitem':
+            return getitem(key)
+        elif message == 'setitem':
+            setitem(key, value)
+        elif message == 'keys':
+            return tuple(k for k, _ in records)
+        elif message == 'values':
+            return tuple(v for _, v in records)
+
+    return dispatch
+
+
+d = make_dict()
+d('setitem', 3, 9)
+d('setitem', 4, 16)
+
+print(d('getitem', 3))
+print(d('getitem', 4))
+print(d('keys'))
+print(d('values'))
