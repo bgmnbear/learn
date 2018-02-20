@@ -54,3 +54,57 @@ def init_instance(cls, *args):
     if init:
         init(instance, *args)
     return instance
+
+
+def make_account_class():
+    """Return the Account class, which has deposit and withdraw methods."""
+
+    def __init__(self, account_holder):
+        self['set']('holder', account_holder)
+        self['set']('balance', 0)
+
+    def deposit(self, amount):
+        """Increase the account balance by amount and return the new balance."""
+        new_balance = self['get']('balance') + amount
+        self['set']('balance', new_balance)
+        return self['get']('balance')
+
+    def withdraw(self, amount):
+        """Decrease the account balance by amount and return the new balance."""
+        balance = self['get']('balance')
+        if amount > balance:
+            return 'Insufficient funds'
+        self['set']('balance', balance - amount)
+        return self['get']('balance')
+
+    return make_class({'__init__': __init__,
+                       'deposit': deposit,
+                       'withdraw': withdraw,
+                       'interest': 0.02})
+
+
+Account = make_account_class()
+jim_acct = Account['new']('Jim')
+print(jim_acct['get']('holder'))
+print(jim_acct['get']('interest'))
+print(jim_acct['get']('deposit')(20))
+print(jim_acct['get']('withdraw')(5))
+
+print(jim_acct['set']('interest', 0.04))
+print(Account['get']('interest'))
+
+
+def make_checking_account_class():
+    """Return the CheckingAccount class, which imposes a $1 withdrawal fee."""
+
+    def withdraw(self, amount):
+        return Account['get']('withdraw')(self, amount + 1)
+
+    return make_class({'withdraw': withdraw, 'interest': 0.01}, Account)
+
+
+CheckingAccount = make_checking_account_class()
+jack_acct = CheckingAccount['new']('Jack')
+print(jack_acct['get']('interest'))
+print(jack_acct['get']('deposit')(20))
+print(jack_acct['get']('withdraw')(5))
