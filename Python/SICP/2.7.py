@@ -70,3 +70,34 @@ ComplexMA.__mul__ = lambda self, other: mul_complex(self, other)
 
 print(ComplexRI(1, 2) + ComplexMA(2, 0))
 print(ComplexRI(0, 1) * ComplexRI(0, 1))
+
+# Pan functions
+from fractions import gcd
+
+
+class Rational(object):
+    def __init__(self, numer, denom):
+        g = gcd(numer, denom)
+        self.numer = numer // g
+        self.denom = denom // g
+
+    def __repr__(self):
+        return 'Rational({0}, {1})'.format(self.numer, self.denom)
+
+
+def add_rational(x, y):
+    nx, dx = x.numer, x.denom
+    ny, dy = y.numer, y.denom
+    return Rational(nx * dy + ny * dx, dx * dy)
+
+
+def mul_rational(x, y):
+    return Rational(x.numer * y.numer, x.denom * y.denom)
+
+
+def iscomplex(z):
+    return type(z) in (ComplexRI, ComplexMA)
+
+
+def isrational(z):
+    return type(z) == Rational
