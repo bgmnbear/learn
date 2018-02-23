@@ -101,3 +101,35 @@ def iscomplex(z):
 
 def isrational(z):
     return type(z) == Rational
+
+
+def add_complex_and_rational(z, r):
+    return ComplexRI(z.real + r.numer / r.denom, z.imag)
+
+
+# def add(z1, z2):
+#     """Add z1 and z2, which may be complex or rational."""
+#     if iscomplex(z1) and iscomplex(z2):
+#         return add_complex(z1, z2)
+#     elif iscomplex(z1) and isrational(z2):
+#         return add_complex_and_rational(z1, z2)
+#     elif isrational(z1) and iscomplex(z2):
+#         return add_complex_and_rational(z2, z1)
+#     else:
+#         return add_rational(z1, z2)
+
+
+def type_tag(x):
+    return type_tag.tags[type(x)]
+
+
+type_tag.tags = {ComplexRI: 'com', ComplexMA: 'com', Rational: 'rat'}
+
+
+def add(z1, z2):
+    types = (type_tag(z1), type_tag(z2))
+    return add.implementations[types](z1, z2)
+
+
+print(add(ComplexRI(1.5, 0), Rational(3, 2)))
+print(add(Rational(5, 3), Rational(1, 2)))
