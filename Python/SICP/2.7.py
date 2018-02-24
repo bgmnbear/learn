@@ -131,5 +131,31 @@ def add(z1, z2):
     return add.implementations[types](z1, z2)
 
 
+def apply(operator_name, x, y):
+    tags = (type_tag(x), type_tag(y))
+    key = (operator_name, tags)
+    return apply.implementations[key](x, y)
+
+
+def mul_complex_and_rational(z, r):
+    return ComplexMA(z.magnitude * r.numer / r.denom, z.angle)
+
+
+add_rational_and_complex = lambda r, z: add_complex_and_rational(z, r)
+mul_rational_and_complex = lambda r, z: mul_complex_and_rational(z, r)
+
+adders = add.implementations.items()
+apply.implementations.update({('add', tags): fn for (tags, fn) in adders})
+
+apply.implementations = {('mul', ('com', 'com')): mul_complex,
+                         ('mul', ('com', 'rat')): mul_complex_and_rational,
+                         ('mul', ('rat', 'com')): mul_rational_and_complex,
+                         ('mul', ('rat', 'rat')): mul_rational}
+
+add.implementations = {('add', ('com', 'com')): add_complex,
+                       ('add', ('com', 'rat')): add_complex_and_rational,
+                       ('add', ('rat', 'com')): add_rational_and_complex,
+                       ('add', ('rat', 'rat')): add_rational}
+
 print(add(ComplexRI(1.5, 0), Rational(3, 2)))
 print(add(Rational(5, 3), Rational(1, 2)))
