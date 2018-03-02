@@ -32,3 +32,34 @@ def fact(n):
 
 
 print(fact(4))
+
+
+def fib(n):
+    if n == 1:
+        return 0
+    if n == 2:
+        return 1
+    return fib(n - 2) + fib(n - 1)
+
+
+def fib_iter(n):
+    prev, curr = 1, 0  # curr is the first Fibonacci number.
+    for _ in range(n - 1):
+        prev, curr = curr, prev + curr
+    return curr
+
+
+def memo(f):
+    """Return a memoized version of single-argument function f."""
+    cache = {}
+
+    def memoized(n):
+        if n not in cache:
+            cache[n] = f(n)
+        return cache[n]
+
+    return memoized
+
+
+fib = memo(fib)
+print(fib(40))
