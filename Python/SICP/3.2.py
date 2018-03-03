@@ -78,3 +78,33 @@ def count_change(a, kinds=(50, 25, 10, 5, 1)):
 
 
 print(count_change(100))
+
+
+# Example: Exponentiation
+def exp(b, n):
+    if n == 0:
+        return 1
+    return b * exp(b, n - 1)
+
+
+def exp_iter(b, n):
+    result = 1
+    for _ in range(n):
+        result = result * b
+    return result
+
+
+def square(x):
+    return x * x
+
+
+def fast_exp(b, n):
+    if n == 0:
+        return 1
+    if n % 2 == 0:
+        return square(fast_exp(b, n // 2))
+    else:
+        return b * fast_exp(b, n - 1)
+
+
+print(fast_exp(2, 100))
