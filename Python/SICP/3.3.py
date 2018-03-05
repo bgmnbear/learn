@@ -1,4 +1,7 @@
 # Recursive Data Structures
+from numpy.core.umath import square
+
+
 class Rlist(object):
     """A recursive list consisting of a first element and the rest."""
 
@@ -31,3 +34,33 @@ s = Rlist(1, Rlist(2, Rlist(3)))
 print(s.rest)
 print(len(s))
 print(s[1])
+
+
+def extend_rlist(s1, s2):
+    if s1 is Rlist.empty:
+        return s2
+    return Rlist(s1.first, extend_rlist(s1.rest, s2))
+
+
+print(extend_rlist(s.rest, s))
+
+
+def map_rlist(s, fn):
+    if s is Rlist.empty:
+        return s
+    return Rlist(fn(s.first), map_rlist(s.rest, fn))
+
+
+print(map_rlist(s, square))
+
+
+def filter_rlist(s, fn):
+    if s is Rlist.empty:
+        return s
+    rest = filter_rlist(s.rest, fn)
+    if fn(s.first):
+        return Rlist(s.first, rest)
+    return rest
+
+
+print(filter_rlist(s, lambda x: x % 2 == 1))
