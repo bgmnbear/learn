@@ -64,3 +64,16 @@ def filter_rlist(s, fn):
 
 
 print(filter_rlist(s, lambda x: x % 2 == 1))
+
+
+def map_tree(tree, fn):
+    if type(tree) != tuple:
+        return fn(tree)
+    return tuple(map_tree(branch, fn) for branch in tree)
+
+
+t = ((1, 2), 3, 4)
+big_tree = ((t, t), 5)
+
+# print(count_leaves(big_tree))
+print(map_tree(big_tree, square))
