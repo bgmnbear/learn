@@ -77,3 +77,29 @@ big_tree = ((t, t), 5)
 
 # print(count_leaves(big_tree))
 print(map_tree(big_tree, square))
+
+
+class Tree(object):
+    def __init__(self, entry, left=None, right=None):
+        self.entry = entry
+        self.left = left
+        self.right = right
+
+    def __repr__(self):
+        args = repr(self.entry)
+        if self.left or self.right:
+            args += ', {0}, {1}'.format(repr(self.left), repr(self.right))
+        return 'Tree({0})'.format(args)
+
+
+def fib_tree(n):
+    """Return a Tree that represents a recursive Fibonacci calculation."""
+    if n == 1:
+        return Tree(0)
+    if n == 2:
+        return Tree(1)
+    left = fib_tree(n - 2)
+    right = fib_tree(n - 1)
+    return Tree(left.entry + right.entry, left, right)
+
+print(fib_tree(5))
