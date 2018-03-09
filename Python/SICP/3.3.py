@@ -102,4 +102,49 @@ def fib_tree(n):
     right = fib_tree(n - 1)
     return Tree(left.entry + right.entry, left, right)
 
+
 print(fib_tree(5))
+
+# Set
+s = {3, 2, 1, 4, 4}
+print(s)
+
+print(3 in s, len(s), s.union({1, 5}), s.intersection({6, 5, 4, 3}))
+
+
+def empty(s):
+    return s is Rlist.empty
+
+
+def set_contains(s, v):
+    """Return True if and only if set s contains v."""
+    if empty(s):
+        return False
+    elif s.first == v:
+        return True
+    return set_contains(s.rest, v)
+
+
+s = Rlist(1, Rlist(2, Rlist(3)))
+print(set_contains(s, 2))
+print(set_contains(s, 5))
+
+
+def adjoin_set(s, v):
+    """Return a set containing all elements of s and element v."""
+    if set_contains(s, v):
+        return s
+    return Rlist(v, s)
+
+
+t = adjoin_set(s, 4)
+print(t)
+
+
+def union_set(set1, set2):
+    """Return a set containing all elements either in set1 or set2."""
+    set1_not_set2 = filter_rlist(set1, lambda v: not set_contains(set2, v))
+    return extend_rlist(set1_not_set2, set2)
+
+
+print(union_set(t, s))
