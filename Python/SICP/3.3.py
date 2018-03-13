@@ -148,3 +148,55 @@ def union_set(set1, set2):
 
 
 print(union_set(t, s))
+
+
+# Ordered tuple collection
+def set_contains(s, v):
+    if empty(s) or s.first > v:
+        return False
+    elif s.first == v:
+        return True
+    return set_contains(s.rest, v)
+
+
+print(set_contains(s, 0))
+
+
+def intersect_set(set1, set2):
+    if empty(set1) or empty(set2):
+        return Rlist.empty
+    e1, e2 = set1.first, set2.first
+    if e1 == e2:
+        return Rlist(e1, intersect_set(set1.rest, set2.rest))
+    elif e1 < e2:
+        return intersect_set(set1.rest, set2)
+    elif e2 < e1:
+        return intersect_set(set1, set2.rest)
+
+
+print(intersect_set(s, s.rest))
+
+
+def set_contains(s, v):
+    if s is None:
+        return False
+    elif s.entry == v:
+        return True
+    elif s.entry < v:
+        return set_contains(s.right, v)
+    elif s.entry > v:
+        return set_contains(s.left, v)
+
+
+def adjoin_set(s, v):
+    if s is None:
+        return Tree(v)
+    if s.entry == v:
+        return s
+    if s.entry < v:
+        return Tree(s.entry, s.left, adjoin_set(s.right, v))
+    if s.entry > v:
+        return Tree(s.entry, adjoin_set(s.left, v), s.right)
+
+
+print(adjoin_set(adjoin_set(adjoin_set(None, 2), 3), 1))
