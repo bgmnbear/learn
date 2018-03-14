@@ -4,3 +4,4 @@ Python/Django/venv/
 *.pyc
 *.sqlite3
 Python/Django/django_venv/
+.idea
