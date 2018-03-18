@@ -5,3 +5,5 @@ Python/Django/venv/
 *.sqlite3
 Python/Django/django_venv/
 .idea
+*.jar
+*.class
