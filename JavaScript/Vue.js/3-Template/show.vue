@@ -23,4 +23,4 @@
 
 <form v-on:submit.prevent="onSubmit">...</form>
 
-<script src="E:\learn\JavaScript\Vue.js\3-Template\template.vue"></script>
+<script src="E:\learn\JavaScript\Vue.js\3-Template\template.js"></script>
