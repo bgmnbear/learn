@@ -1,0 +1,19 @@
+<script src="https://cdn.jsdelivr.net/npm/vue" xmlns:v-bind="http://www.w3.org/1999/xhtml"></script>
+
+<div id="example" class="static"
+     v-bind:class="{ active: isActive, 'text-danger': hasError }">
+</div>
+
+<div id="example1" v-bind:class="classObject"></div>
+
+<div id="example2" v-bind:class="classObject"></div>
+
+<div id="list" v-bind:class="[activeClass, errorClass]"></div>
+
+<div id="inline-obj" v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+
+<div id="inline-obj1" v-bind:style="styleObject"></div>
+
+<div id="inline-list" v-bind:style="[baseStyles, overridingStyles]"></div>
+
+<script src="E:\learn\JavaScript\Vue.js\5-Class and Style binding\CSB.js"></script>
