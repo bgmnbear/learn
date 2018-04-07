@@ -24,9 +24,9 @@ def tag(name, *content, cls=None, **attrs):
 print(tag('br'))
 # 第一个参数后面的任意个参数会被*content捕获，存入一个元组
 print(tag('p', 'hello,world'))
-# 没有指定明确官架子的参数会给**attrs捕获，存入一个字典
+# 没有指定明确关键字的参数会给**attrs捕获，存入一个字典
 print(tag('p', 'hello,world', id=333))
 my_tag = {'name': 'img', 'little': 'sunset boulevard',
           'src': 'sunset.jpg', 'cls': 'framed'}
-# 在my_tag前加入** 滋滋暗中的所有元素作为单个参数传入，同键名会绑定到对应的具名参数上，余下的会被**attrs捕获
+# 在my_tag前加入** ，会导致所有元素作为单个参数传入，同键名会绑定到对应的具名参数上，余下的会被**attrs捕获
 print(tag(**my_tag))
