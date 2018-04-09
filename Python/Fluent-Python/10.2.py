@@ -1,10 +1,14 @@
 '''
 多维向量类 v1
 '''
+import functools
 import numbers
+import operator
 from array import array
 import reprlib
 import math
+
+import itertools
 
 
 class Vector:
@@ -34,7 +38,13 @@ class Vector:
         return (bytes([ord(self.typecode)]) + bytes(self._components))
 
     def __eq__(self, other):
-        return tuple(self) == tuple(other)
+        return (len(self) == len(other)) and all(a == b for a, b in zip(self, other))
+
+    def __hash__(self):
+        # 先用生成器表达式惰性计算各个分量的散列值
+        hashes = (hash(x) for x in self)
+        # 再用过operator的xor函数计算聚合的散列值 第三个参数0是初始值
+        return functools.reduce(operator.xor, hashes, 0)
 
     def __abs__(self):
         # 通过计算各个分量的平方和来算出绝对值（距离）
@@ -81,6 +91,31 @@ class Vector:
                 raise AttributeError(msg)
         super().__setattr__(name, value)  # 没有特殊情况我们调用超类的setattr来动态增加属性
 
+    def angle(self, n):
+        # 使用 n维度球体 中的公式计算某个角坐标
+        r = math.sqrt(sum(x * x for x in self[n:]))
+        a = math.atan2(r, self[n - 1])
+        if (n == len(self)) and (self[-1] < 0):
+            return math.pi * 2 - a
+        else:
+            return a
+
+    def angles(self):
+        # 生成器表达式，计算所有的叫坐标
+        return (self.angle(n) for n in range(1, len(self)))
+
+    def __format__(self, fmt_spec):
+        if fmt_spec.endswith('h'):  # 超球面坐标
+            fmt_spec = fmt_spec[:-1]
+            # 使用itertools.chain生成器表达式，无迭代向量的模和各个角坐标
+            coords = itertools.chain([abs(self)], self.angles())
+            out_fmt = '<{}>'  # 球面坐标
+        else:
+            coords = self
+            out_fmt = '({})'  # 笛卡尔坐标
+        components = (format(c, fmt_spec) for c in coords)  # 格式化各个元素
+        return out_fmt.format(', '.join(components))
+
     @classmethod
     def frombytes(cls, octets):
         typecode = chr(octets[0])
@@ -100,3 +135,13 @@ if __name__ == '__main__':
 
     print(test.A)
     print(test)
+
+    print(hash(test))
+
+    test1 = Vector([3.0, 4.0, 5.0])
+    print(test == test1)
+
+    v1 = Vector([1, 1, 2])
+    v2 = Vector([1, 2, 3, 4, 5, 6])
+    print(format(v1, '.3f'))
+    print(format(v2, '.3h'))
