@@ -26,8 +26,31 @@ class Sentence:
         # 该函数用于生成大型数据结构的简略字符串的表现形式
         return 'Sentence(%s)' % reprlib.repr(self.text)
 
+    def __iter__(self):
+        '''明确表明该类型是可以迭代的'''
+        # 初始化对应的迭代器，并返回
+        return SentenceIterator(self.words)
 
-# TEST 该类是否能够完成迭代
+
+class SentenceIterator:
+    def __init__(self, words):
+        self.words = words  # 该迭代器实例应用单词列表
+        self.index = 0  # 用于定位下一个元素
+
+    def __next__(self):
+        try:
+            word = self.words[self.index]  # 返回当前的元素
+        except IndexError:
+            raise StopIteration()
+        self.index += 1  # 索引+1
+        return word  # 返回单词
+
+    def __iter__(self):
+        return self
+
+
+        # TEST 该类是否能够完成迭代
+
 
 s = Sentence('Ehco is a good Python coder')
 print(s)
