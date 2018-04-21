@@ -8,3 +8,5 @@ Python/Django/django_venv/
 *.jar
 *.class
 Kotlin/Kt08/.gradle/
+Python/Tornado/tornado/
+*.iml
