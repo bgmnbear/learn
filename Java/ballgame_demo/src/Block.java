@@ -8,7 +8,7 @@ public class Block extends Frame {
     private static final int GAME_HEIGHT = 400;
 
     private int x = 50;
-
+    
     private Image offScreenImage = null;
 
     public void paint(Graphics g) {
@@ -65,6 +65,9 @@ public class Block extends Frame {
 
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
+
+            BlockHitWall();
+
             switch (key) {
                 case KeyEvent.VK_LEFT:
                     x -= offset;
@@ -77,8 +80,18 @@ public class Block extends Frame {
 
     }
 
+    private void BlockHitWall() {
+        int leftX = 20;
+        int rightX = 520;
+        if (x < leftX) {
+            x = leftX;
+        } else if (x > rightX) {
+            x = rightX;
+        }
+    }
+
     public static void main(String[] args) {
-        Block tc = new Block();
-        tc.launchFrame();
+        Block b = new Block();
+        b.launchFrame();
     }
 }
