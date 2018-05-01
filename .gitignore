@@ -10,3 +10,6 @@ Python/Django/django_venv/
 Kotlin/Kt08/.gradle/
 Python/Tornado/tornado/
 *.iml
+Python/web.py/webpy/
+Python/pygame_demo/pygame/
+Python/pygame_demo/img/
