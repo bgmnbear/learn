@@ -1,4 +1,4 @@
-package easy_session
+package main
 
 import (
 	"time"
