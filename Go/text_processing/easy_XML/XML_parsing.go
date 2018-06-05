@@ -10,11 +10,11 @@ import (
 type Recurlyservers struct {
 	XMLName     xml.Name `xml:"servers"`
 	Version     string   `xml:"version,attr"`
-	Svs         []server `xml:"server"`
+	Svs         []server1 `xml:"server"`
 	Description string   `xml:",innerxml"`
 }
 
-type server struct {
+type server1 struct {
 	XMLName    xml.Name `xml:"server"`
 	ServerName string   `xml:"serverName"`
 	ServerIP   string   `xml:"serverIP"`
