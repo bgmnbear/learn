@@ -3,3 +3,16 @@ Python/SICP/.idea/
 Python/Django/venv/
 *.pyc
 *.sqlite3
+Python/Django/django_venv/
+.idea
+*.jar
+*.class
+Kotlin/Kt08/.gradle/
+Python/Tornado/tornado/
+*.iml
+Python/web.py/webpy/
+Python/pygame_demo/pygame/
+Python/pygame_demo/img/
+Python/Pygame/pygame/
+Python/Pygame/img/
+Lisp/SICP/.vscode/
