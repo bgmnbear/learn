@@ -1,6 +1,18 @@
 class Hello
-  puts "Hello Ruby!"
+  def Hello.hello()
+    for i in 0..3
+      puts "Hello Ruby! * #{i}"
+    end
+  end
 end
+
+Hello.hello()
+
+def hello_test
+  yield
+end
+
+hello_test {puts "Hello world"}
 
 class Customer
   @@no_of_customers = 0
@@ -50,3 +62,51 @@ class1obj = Class1.new
 class1obj.print_global
 class2obj = Class2.new
 class2obj.print_global
+
+module Helloable
+  def hello
+    puts "Hello World"
+  end
+end
+
+class IncludeClass
+  include Helloable
+end
+
+class ExtendClass
+  extend Helloable
+end
+
+IncludeClass.new.hello
+ExtendClass.hello
+
+module A
+  def a1
+  end
+
+  def a2
+  end
+end
+
+module B
+  def b1
+  end
+
+  def b2
+  end
+end
+
+class Sample
+  include A
+  include B
+
+  def s1
+  end
+end
+
+samp = Sample.new
+samp.a1
+samp.a2
+samp.b1
+samp.b2
+samp.s1
