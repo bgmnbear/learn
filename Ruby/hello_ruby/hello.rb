@@ -14,6 +14,9 @@ end
 
 hello_test {puts "Hello world"}
 
+ruby_array = Array.new(3, 'arr')
+puts "#{ruby_array}"
+
 class Customer
   @@no_of_customers = 0
 
@@ -79,7 +82,7 @@ end
 
 IncludeClass.new.hello
 ExtendClass.hello
-
+p
 module A
   def a1
   end
@@ -110,3 +113,5 @@ samp.a2
 samp.b1
 samp.b2
 samp.s1
+
+
