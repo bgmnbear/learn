@@ -35,12 +35,28 @@ int conditional(int x, int y, int z) {
 }
 
 int subOK(int x, int y) {
-    int res = ~y + 1 +x;
+    int res = ~y + 1 + x;
     int sameSign = (x ^ y) >> 31;
     int resSign = (res ^ x) >> 31;
     return !(sameSign & resSign);
 }
 
+int isGreater(int x, int y) {
+    int sign_x = x >> 31;
+    int sign_y = y >> 31;
+
+    int sameSign = !(sign_x ^ sign_y);
+    int diffSign = !sameSign;
+
+    int resSign = (~y + x) >> 31;
+
+    return (sameSign & !resSign) | (diffSign & !sign_x);
+}
+
 int main(int argc, char const *argv[]) {
+    int a = isGreater(-3, 4);
+    int b = isGreater(-5, -3);
+    int c = isGreater(5, -5);
+    printf("%d%d%d", a, b, c);
     return 0;
 }
