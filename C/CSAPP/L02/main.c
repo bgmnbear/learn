@@ -35,3 +35,47 @@ Else:
 Done:
     return result;
 }
+
+
+// Do While 的 C 语言代码
+long pcount_do(unsigned long x)
+{
+    long result = 0;
+    do {
+        result += x & 0x1;
+        x >>= 1;
+    } while (x);
+    return result;
+}
+// Goto 版本
+long pcount_goto(unsigned long x)
+{
+    long result = 0;
+loop:
+    result += x & 0x1;
+    x >>= 1;
+    if (x) goto loop;
+    return result;
+}
+
+long switch_eg (long x, long y, long z){
+	long w = 1;
+	switch (x) {
+		case 1:
+			w = y*z;
+			break;
+		case 2:
+			w = y/z;
+			// fall through
+		case 3:
+			w += z;
+			break;
+		case 5:
+		case 6:
+			w -= z;
+			break;
+		default:
+			w = 2;
+	}
+	return w;
+}
