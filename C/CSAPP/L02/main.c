@@ -79,3 +79,24 @@ long switch_eg (long x, long y, long z){
 	}
 	return w;
 }
+
+
+// multstore 函数
+void multstore (long x, long y, long *dest)
+{
+    long t = mult2(x, y);
+    *dest = t;
+}
+// mult2 函数
+long mult2(long a, long b)
+{
+    long s = a * b;
+    return s;
+}
+
+long pcount_r(unsigned long x) {
+	if (x == 0)
+		return 0;
+	else
+		return (x & 1) + pcount_r(x >> 1);
+}
