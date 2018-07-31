@@ -100,3 +100,69 @@ long pcount_r(unsigned long x) {
 	else
 		return (x & 1) + pcount_r(x >> 1);
 }
+
+int get_a_digit(int index, int dig)
+{
+    return A[index][dig];
+}
+
+struct rec
+{
+    int a[4];
+    size_t i;
+    struct rect *next;
+};
+
+struct S1
+{
+    char c;
+    int i[2];
+    double v;
+} *p;
+
+struct S2 {
+	double v;
+	int i[2];
+	char c;
+} *p;
+
+struct S4 {
+	char c;
+	int i;
+	char d;
+} *p;
+
+struct S5 {
+	int i;
+	char c;
+	char d;
+} *p;
+
+
+typedef struct
+{
+    int a[2];
+    double d;
+} struct_t;
+
+double fun(int i)
+{
+    volatile struct_t s;
+    s.d = 3.14;
+    s.a[i] = 1073741824; // 可能会越界
+    return s.d;
+}
+
+// 从 stdin 中获取输入
+char *gets(char *dest)
+{
+    int c = getchar();
+    char *p = dest;
+    while (c != EOF && c != '\n')
+    {
+        *p++ = c;
+        c = getchar();
+    }
+    *p = '\0';
+    return dest;
+}
