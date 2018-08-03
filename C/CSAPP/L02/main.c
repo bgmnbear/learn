@@ -166,3 +166,95 @@ char *gets(char *dest)
     *p = '\0';
     return dest;
 }
+
+void echo() {
+	char buf[4]; // 太小
+	gets(buf);
+	puts(buf);
+}
+
+void call_echo() {
+	echo();
+}
+
+// 程序优化通用技巧
+void set_row(double *a, double *b, long i, long n){
+    long j;
+    for (j = 0; j < n; j++){
+        a[n*i + j] = b[j];
+    }
+}
+// 代码移动
+void set_row1(double *a, double *b, long i, long n){
+    long j;
+    int ni = n * i;
+    for (j = 0; j < n; j++){
+        a[ni + j] = b[j];
+    }
+}
+// 减少计算强度
+for (i = 0; i < n; i++){
+    int ni = n * i;
+    for (j = 0; j < n; j++)
+        a[ni + j] = b[j];
+}
+
+int ni = 0;
+for (i = 0; i < n; i++){
+    for (j = 0; j < n; j++)
+        a[ni + j] = b[j];
+    ni += n;
+}
+// 公共子表达式
+/* Sum neighbors of i, j */
+up =    val[(i-1)*n + j  ];
+down =  val[(i+1)*n + j  ];
+left =  val[i*n     + j-1];
+right = val[i*n     + j+1];
+sum = up + down + left + right;
+
+long inj = i*n + j;
+up =    val[inj - n];
+down =  val[inj + n];
+left =  val[inj - 1];
+right = val[inj + 1];
+sum = up + down + left + right;
+// 小心过程调用
+void lower1(char *s){
+    size_t i;
+    for (i = 0; i < strlen(s); i++)
+        if (s[i] >= 'A' && s[i] <= 'Z')
+            s[i] -= ('A' - 'a');
+}
+
+void lower2(char *s){
+    size_t i;
+    size_t len = strlen(s);
+    for (i = 0; i < len; i++)
+        if (s[i] >= 'A' && s[i] <= 'Z')
+            s[i] -= ('A' - 'a');
+}
+// 注意内存问题
+// 把 nxn 的矩阵 a 的每一行加起来，存到向量 b 中
+void sum_rows1(double *a, double *b, long n)
+{
+    long i, j;
+    for (i = 0; i < n; i++)
+    {
+        b[i] = 0;
+        for (j = 0; j < n; j++)
+            b[i] += a[i*n + j];
+    }
+}
+// 把 nxn 的矩阵 a 的每一行加起来，存到向量 b 中
+void sum_rows2(double *a, double *b, long n)
+{
+    long i, j;
+    for (i = 0; i < n; i++)
+    {
+        double val = 0;
+        for (j = 0; j < n; j++)
+            val += a[i*n + j];
+        b[i] = val;
+    }
+}
