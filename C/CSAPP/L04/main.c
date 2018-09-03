@@ -1,3 +1,4 @@
+// Symbol resolution
 // 文件 main.c
 int sum(int *a, int n);
 int array[2] = {1, 2}; // 变量 array 在此定义
@@ -75,3 +76,15 @@ p1() { ... }
 // 文件 p2.c
 double x;
 p2() { ... }
+
+
+
+
+// Relocation
+int sum(int *a, int n);
+int array[2] = {1, 2};
+int main()
+{
+    int val = sum(array, 2);
+    return val;
+}
