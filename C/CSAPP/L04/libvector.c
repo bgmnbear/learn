@@ -1,3 +1,4 @@
+// 静态库
 // 文件 main.c
 #include <stdio.h>
 #include "vector.h"
@@ -26,3 +27,11 @@ void multvec(int *x, int *y, int *z, int n)
     for (i = 0; i < n; i++)
         z[i] = x[i] * y[i];
 }
+
+
+// 编译链接的时候，把静态库放到编译命令的后面
+unix> gcc -L. libtest.o -lmine
+# 上面这句不会出错，但是下面的会
+unix> gcc -L. -lmine libtest.o
+libtest.o: In function `main`:
+libtest.o(.text+0x4): Undefined reference to `libfun`
