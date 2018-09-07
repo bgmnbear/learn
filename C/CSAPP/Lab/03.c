@@ -9,6 +9,7 @@ void foo(char *input){
 address1: mov %rbx, %rax; ret
 address2: pop %rbx; ret
 
+
 // phase 1
 void test() {
     int val;
@@ -22,6 +23,7 @@ void touch1() {
     validate(1);
     exit(0);
 }
+
 
 // phase 2
 void touch2(unsigned val){
@@ -42,6 +44,7 @@ ret
 // 转换对应机器码
 gcc -c p2.s
 objdump -d p2.o > p2.byte
+
 
 // phase 3
 int hexmatch(unsigned val, char *sval){
