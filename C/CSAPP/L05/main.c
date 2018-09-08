@@ -55,3 +55,52 @@ int main()
     printf("I'm the parent! x = %d\n", --x);
     exit(0);
 }
+
+
+// Signal
+void forkandkill()
+{
+    pid_t pid[N];
+    int i;
+    int child_status;
+
+    for (i = 0; i < N; i++)
+        if ((pid[i] = fork()) == 0)
+            while(1) ;  // 死循环
+
+    for (i = 0; i < N; i++)
+    {
+        printf("Killing process %d\n", pid[i]);
+        kill(pid[i], SIGINT);
+    }
+
+    for (i = 0; i < N; i++)
+    {
+        pid_t wpid = wait(&child_status);
+        if (WIFEXITED(child_status))
+            printf("Child %d terminated with exit status %d\n",
+                    wpid, WEXITSTATUS(child_status));
+        else
+            printf("Child %d terminated abnormally\n", wpid);
+    }
+}
+
+void sigint_handler(int sig) // SIGINT 处理器
+{
+    printf("想通过 ctrl+c 来关闭我？\n");
+    sleep(2);
+    fflush(stdout);
+    sleep(1);
+    printf("OK. :-)\n");
+    exit(0);
+}
+int main()
+{
+    // 设定 SIGINT 处理器
+    if (signal(SIGINT, sigint_handler) == SIG_ERR)
+        unix_error("signal error");
+
+    // 等待接收信号
+    pause();
+    return 0;
+}
