@@ -104,3 +104,42 @@ int main()
     pause();
     return 0;
 }
+
+
+// 临时阻塞特定的信号
+sigset_t mask, prev_mask;
+Sigemptyset(&mask); // 创建空集
+Sigaddset(&mask, SIGINT); // 把 SIGINT 信号加入屏蔽列表中
+// 阻塞对应信号，并保存之前的集合作为备份
+Sigprocmask(SIG_BLOCK, &mask, &prev_mask);
+...
+... // 这部分代码不会被 SIGINT 中断
+...
+// 取消阻塞信号，恢复原来的状态
+Sigprocmask(SIG_SETMASK, &prev_mask, NULL);
+
+
+// None Local Jump
+jmp_buf env;
+P1()
+{
+    if (setjmp(env))
+    {
+        // 跳转到这里
+    } else
+    {
+        P2();
+    }
+
+}
+P2()
+{
+    ...
+    P2();
+    ...
+    P3();
+}
+P3()
+{
+    longjmp(env, 1);
+}
