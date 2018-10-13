@@ -6,3 +6,5 @@ let lostNumbers = [4,8,15,16,23,48]
 lostNumbers !! 2
 
 [3,2,1] > [2,1,0]
+
+['a'..'z']
