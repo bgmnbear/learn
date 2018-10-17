@@ -74,3 +74,47 @@ int *BinheapDelete(int **binheap, int *size) {
     Heapify(binheap, *size, 0);
     return (packet);
 }
+
+// Referencing Nonexistent Variables
+int *foo() {
+    int val;
+
+    return &val;
+}
+
+// Freeing Blocks Multiple Times
+x = malloc(N * sizeof(int));
+//  <manipulate x>
+free(x);
+y = malloc(M * sizeof(int));
+//  <manipulate y>
+free(x);
+
+// Referencing Freed Blocks
+x = malloc(N * sizeof(int));
+//  <manipulate x>
+free(x);
+//  ....
+y = malloc(M * sizeof(int));
+for (i = 0; i < M; i++)
+    y[i] = x[i]++;
+
+// Memory Leaks
+foo() {
+    int *x = malloc(N * sizeof(int));
+    // ...
+    return ;
+}
+//
+struct list {
+    int val;
+    struct list *next;
+};
+foo() {
+    struct list *head = malloc(sizeof(struct list));
+    head->val = 0;
+    head->next = NULL;
+    //...
+    free(head);
+    return;
+}
