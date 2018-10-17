@@ -32,3 +32,15 @@ let rightTriangles' = [ (a,b,c) | c  [1..10], b  [1..c], a  [1..b], a^2 + b^2 ==
 
 addThree :: Int -> Int -> Int -> Int   
 addThree x y z = x + y + z
+
+:t fst
+:t (==)
+
+show 3
+read "5" - 2
+read "5" :: Int    
+
+t (*) 
+
+
+
