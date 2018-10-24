@@ -18,3 +18,7 @@ filter _ [] = []
 filter p (x:xs)    
     | p x       = x : filter p xs   
     | otherwise = filter p xs
+
+largestDivisible :: (Integral a) => a   
+largestDivisible = head (filter p [100000,99999..])   
+    where p x = x `mod` 3829 == 0
