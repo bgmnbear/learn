@@ -99,3 +99,50 @@ int main(int argc, char **argv)
         printf("Correct! cnt=%ld\n", cnt);
     exit(0);
 }
+
+// Signal
+// 先定义信号量
+volatile long cnt = 0;
+sem_t mutex;
+Sem_init(&mutex, 0, 1);
+// 在线程中用 P 和 V 包围关键操作
+for (i = 0; i < niters; i++)
+{
+    P(&mutex);
+    cnt++;
+    V(&mutex);
+}
+
+
+// sbuf.c
+// Create an empty, bounded, shared FIFO buffer with n slots
+void sbuf_init(sbuf_t *sp, int n) {
+    sp->buf = Calloc(n, sizeof(int));
+    sp->n = n;                  // Buffer holds max of n items
+    sp->front = sp->rear = 0;   // Empty buffer iff front == rear
+    Sem_init(&sp->mutex, 0, 1); // Binary semaphore for locking
+    Sem_init(&sp->slots, 0, n); // Initially, buf has n empty slots
+    Sem_init(&sp->items, 0, 0); // Initially, buf has 0 items
+}
+// Clean up buffer sp
+void sbuf_deinit(sbuf_t *sp){
+    Free(sp->buf);
+}
+// Insert item onto the rear of shared buffer sp
+void sbuf_insert(sbuf_t *sp, int item) {
+    P(&sp->slots);                        // Wait for available slot
+    P(&sp->mutext);                       // Lock the buffer
+    sp->buf[(++sp->rear)%(sp->n)] = item; // Insert the item
+    V(&sp->mutex);                        // Unlock the buffer
+    V(&sp->items);                        // Announce available item
+}
+// Remove and return the first tiem from the buffer sp
+int sbuf_remove(sbuf_f *sp) {
+    int item;
+    P(&sp->items);                         // Wait for available item
+    P(&sp->mutex);                         // Lock the buffer
+    item = sp->buf[(++sp->front)%(sp->n)]; // Remove the item
+    V(&sp->mutex);                         // Unlock the buffer
+    V(&sp->slots);                         // Announce available slot
+    return item;
+}
