@@ -14,3 +14,6 @@ search :: (Eq a) => [a] -> [a] -> Bool
 search needle haystack =   
   let nlen = length needle   
   in foldl (\acc x -> if take nlen x == needle then True else acc) False (tails haystack)
+
+
+zipWith3 (\x y z -> x + y + z) [1,2,3] [4,5,2,2] [2,2,3]   
