@@ -23,3 +23,12 @@ groupBy (\x y -> (x > 0) == (y > 0)) values
 
 let xs = [[5,4,5,4,4],[1,2,3],[3,5,4,3],[],[2],[2,2]]  
 sortBy (compare `on` length) xs
+
+encode :: Int -> String -> String   
+encode shift msg =  
+  let ords = map ord msg   
+  shifted = map (+ shift) ords   
+  in map chr shifted
+
+decode :: Int -> String -> String   
+decode shift msg = encode (negate shift) msg
