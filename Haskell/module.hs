@@ -47,3 +47,7 @@ findKey key ((k,v):xs) =
 
 findKey :: (Eq k) => k -> [(k,v)] -> Maybe v  
 findKey key = foldr (\(k,v) acc -> if key == k then Just v else acc) Nothing
+
+
+fromList' :: (Ord k) => [(k,v)] -> Map.Map k v  
+fromList' = foldr (\(k,v) acc -> Map.insert k v acc) Map.empty
