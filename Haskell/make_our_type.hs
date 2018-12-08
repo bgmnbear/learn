@@ -65,3 +65,25 @@ data Person = Person { firstName :: String
                      , lastName :: String   
                      , age :: Int   
                      } deriving (Eq, Show, Read)                     
+
+
+data Day = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday    
+           deriving (Eq, Ord, Show, Read, Bounded, Enum)                     
+
+
+           
+import qualified Data.Map as Map   
+
+data LockerState = Taken | Free deriving (Show, Eq)   
+
+type Code = String   
+
+type LockerMap = Map.Map Int (LockerState, Code)  
+
+lockerLookUp :: Int -> LockerMap -> Either String Code
+lockerLookUp num map = 
+    case Map.lookup num map of 
+        Nothing -> Left "Nothing"
+        Just (state, code) -> if state /= Taken
+                              then Right code
+                              else Left "Taken"
