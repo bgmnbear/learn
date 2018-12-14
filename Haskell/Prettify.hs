@@ -26,4 +26,18 @@ simpleEscapes = zipWith ch "\b\n\f\r\t\\\"/" "bnfrt\\\"/"
     where ch a b = (a, ['\\',b])
 
 hexEscape :: Char -> Doc
-hexEscape c = undefined
+hexEscape c | d < 0x10000 = smallHex d
+            | otherwise = astral (d - 0x10000)
+        where d = ord c
+
+smallHex :: Int -> Doc
+smallHex x = text "\\u" 
+            <> text (replicate (4 - (length hex)) '0') 
+            <> text hex
+    where hex = showHex x ""
+
+astral :: Int -> Doc
+astral x = smallHex (a + 0xd800) <> smallHex (b + 0xdc00)
+    where a = (x `shiftR` 10) .&. 0x3ff
+          b = x .&. 0x3ff
+
