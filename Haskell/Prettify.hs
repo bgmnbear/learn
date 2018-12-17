@@ -41,3 +41,14 @@ astral x = smallHex (a + 0xd800) <> smallHex (b + 0xdc00)
     where a = (x `shiftR` 10) .&. 0x3ff
           b = x .&. 0x3ff
 
+series :: Char -> Char -> (a -> Doc) -> [a] -> Doc
+series open close f = enclose open close 
+                    . fset . punctuate (Char ',') . map f
+
+fset :: [Doc] -> Doc
+fset xs = undefined
+
+punctuate :: Doc -> [Doc] -> [Doc]
+punctuate p []     = []
+punctuate p [d]    = [d]
+punctuate p (d:ds) = (d <> p) : punctuate p ds
