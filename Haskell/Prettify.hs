@@ -1,3 +1,27 @@
+data Doc = Empty
+        | Char Char
+        | Text String
+        | Line
+        | Concat Doc Doc
+        | Union Doc Doc
+        deriving (Show, Eq)
+
+empty :: Doc
+empty = Empty
+
+char :: Char -> Doc
+char c = Char c
+
+text :: String -> Doc
+text "" = Empty
+text s  = Text s
+
+double :: Double -> Doc
+double d = text (show d)
+
+line :: Doc
+line = Line
+
 string :: String -> Doc
 string = enclose '"' '"' . hcat . map oneChar
 
@@ -5,14 +29,18 @@ enclose :: Char -> Char -> Doc -> Doc
 enclose left right x = char left <> x <> char right
 
 (<>) :: Doc -> Doc -> Doc
-a <> b = undefined
+a <> Empty = a
+Empty <> a = a
+a <> b = a `Concat` b
 
 char :: Char -> Doc
 char c = undefined
 
 hcat :: [Doc] -> Doc
-hcat [] = JNull
-hcat [x:xs] = x <> hcat xs
+hcat :: fold (<>)
+
+fold :: (Doc -> Doc -> Doc) -> [Doc] -> Doc
+fold f = foldr f empty
 
 oneChar :: Char -> Doc
 oneChar c = case lookup c simpleEscapes of
@@ -52,3 +80,21 @@ punctuate :: Doc -> [Doc] -> [Doc]
 punctuate p []     = []
 punctuate p [d]    = [d]
 punctuate p (d:ds) = (d <> p) : punctuate p ds
+
+fsep :: [Doc] -> Doc
+fsep = fold (</>)
+
+(</>) :: Doc -> Doc -> Doc
+a </> b = a <> softline <> b
+
+softline :: Doc
+softline = group line
+
+group :: Doc -> Doc
+group x = flatten x `Union` x
+
+flatten :: Doc -> Doc
+flatten (x `Concat` y) = flatten x `Concat` flatten y
+flatten Line           = Char ' '
+flatten (x `Union` _)  = flatten x
+flatten other          = other

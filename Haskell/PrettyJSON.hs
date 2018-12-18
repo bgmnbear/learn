@@ -1,3 +1,11 @@
+module PrettyJSON   
+    (
+        renderJValue
+    ) where
+
+import SimpleJSON (JValue(..))
+import Prettify (Doc, (<>), char, double, fsep, hcat, punctuate, text, compact, pretty)
+
 renderJValue :: JValue -> Doc
 renderJValue (JBool True)  = text "true"
 renderJValue (JBool False) = text "false"
