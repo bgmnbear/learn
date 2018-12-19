@@ -1,3 +1,9 @@
+module Prettify where
+import Prelude hiding ((<>)) 
+import Data.Bits (shiftR, (.&.))
+import Data.Char (ord)
+import Numeric (showHex)
+
 data Doc = Empty
         | Char Char
         | Text String
@@ -25,19 +31,17 @@ line = Line
 string :: String -> Doc
 string = enclose '"' '"' . hcat . map oneChar
 
-enclose :: Char -> Char -> Doc -> Doc
-enclose left right x = char left <> x <> char right
-
 (<>) :: Doc -> Doc -> Doc
 a <> Empty = a
 Empty <> a = a
 a <> b = a `Concat` b
 
-char :: Char -> Doc
-char c = undefined
+enclose :: Char -> Char -> Doc -> Doc
+enclose left right x = char left <> x <> char right
+
 
 hcat :: [Doc] -> Doc
-hcat :: fold (<>)
+hcat = fold (<>)
 
 fold :: (Doc -> Doc -> Doc) -> [Doc] -> Doc
 fold f = foldr f empty
@@ -71,10 +75,7 @@ astral x = smallHex (a + 0xd800) <> smallHex (b + 0xdc00)
 
 series :: Char -> Char -> (a -> Doc) -> [a] -> Doc
 series open close f = enclose open close 
-                    . fset . punctuate (Char ',') . map f
-
-fset :: [Doc] -> Doc
-fset xs = undefined
+                    . fsep . punctuate (Char ',') . map f
 
 punctuate :: Doc -> [Doc] -> [Doc]
 punctuate p []     = []
@@ -98,3 +99,15 @@ flatten (x `Concat` y) = flatten x `Concat` flatten y
 flatten Line           = Char ' '
 flatten (x `Union` _)  = flatten x
 flatten other          = other
+
+compact :: Doc -> String
+compact x = transform [x]
+    where transform [] = ""
+          transform (d:ds) = 
+            case d of 
+                Empty -> transform ds
+                Char c -> c : transform ds
+                Text s -> s ++ transform ds
+                Line -> '\n' : transform ds
+                a `Concat` b -> transform (a:b:ds)
+                _ `Union` b -> transform (b:ds)

@@ -2,9 +2,9 @@ module PrettyJSON
     (
         renderJValue
     ) where
-
+import Prelude hiding ((<>)) 
 import SimpleJSON (JValue(..))
-import Prettify (Doc, (<>), char, double, fsep, hcat, punctuate, text, compact, pretty)
+import Prettify (Doc, (<>), string, series, char, double, fsep, hcat, punctuate, text, compact)
 
 renderJValue :: JValue -> Doc
 renderJValue (JBool True)  = text "true"
@@ -15,5 +15,5 @@ renderJValue (JString str) = string str
 renderJValue (JArray ary)  = series '[' ']' renderJValue ary
 renderJValue (JObject obj) = series '{' '}' field obj
     where field (name, val) = string name
-                            <> text ':'
+                            <> text ": "
                             <> renderJValue val                 
