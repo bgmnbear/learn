@@ -4,6 +4,7 @@ import (
 	"log"
 	"net"
 	"net/rpc"
+	"net/rpc/jsonrpc"
 )
 
 const HelloServiceName = "path/to/pkg.HelloService"
@@ -24,7 +25,7 @@ func (p *HelloService) Hello(request string, reply *string) error {
 }
 
 func main() {
-	RegisterHelloService(new(HelloService))
+	rpc.RegisterName("HelloService", new(HelloService))
 
 	listener, err := net.Listen("tcp", ":1234")
 	if err != nil {
@@ -37,6 +38,6 @@ func main() {
 			log.Fatal("Accept error:", err)
 		}
 
-		go rpc.ServeConn(conn)
+		go rpc.ServeCodec(jsonrpc.NewServerCodec(conn))
 	}
 }
