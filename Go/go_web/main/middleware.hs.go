@@ -1,31 +1,28 @@
 package main
 
-import (
-	"log"
-	"net/http"
-	"os"
-	"time"
-)
+import "net/http"
 
-var logger = log.New(os.Stdout, "", 0)
+type middleware func(http.Handler) http.Handler
 
-func hello(wr http.ResponseWriter, r *http.Request) {
-	wr.Write([]byte("hello"))
-}
- 
-
-func timeMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(wr http.ResponseWriter, r *http.Request) {
-		timeStart := time.Now()
-
-		// next handler
-		next.ServeHTTP(wr, r)
-
-		timeElapsed := time.Since(timeStart)
-		logger.Println(timeElapsed)
-	})
+type Router struct {
+	middlewareChain [] func(http.Handler) http.Handler
+	mux map[string] http.Handler
 }
 
-func main() {
-	http.HandleFunc("/", timeMiddleware(hello))
+func NewRouter() *Router{
+	return &Router{}
+}
+
+func (r *Router) Use(m middleware) {
+	r.middlewareChain = append(r.middlewareChain, m)
+}
+
+func (r *Router) Add(route string, h http.Handler) {
+	var mergedHandler = h
+
+	for i := len(r.middlewareChain) - 1; i >= 0; i-- {
+		mergedHandler = r.middlewareChain[i](mergedHandler)
+	}
+
+	r.mux[route] = mergedHandler
 }
