@@ -1,4 +1,8 @@
 getFileSize :: FilePath -> IO (Maybe Integer)
+getFileSize path = handle (\_ -> return Nothing) $
+  bracket (openFile path ReadMode) hClose $ \h -> do
+    size <- hFileSize h
+    return (Just size)
 
 
 betterFind :: Predicate -> FilePath -> IO [FilePath]
@@ -24,3 +28,8 @@ saferFileSize path = handle (\_ -> return Nothing) $ do
   size <- hFileSize h
   hClose h
   return (Just size)  
+
+
+myTest path _ (Just size) _ =
+    takeExtension path == ".cpp" && size > 131072
+myTest _ _ _ _ = False
