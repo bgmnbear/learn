@@ -70,3 +70,10 @@ sizeP _ _ Nothing     _ = -1
 
 equalP :: (Eq a) => InfoP a -> a -> InfoP Bool
 equalP f k = \w x y z -> f w x y z == k
+
+
+liftP :: (a -> a -> Bool) -> InfoP a -> a -> InfoP Bool
+liftP comparator getter argument w x y z = (getter w x y z) `comparator` argument
+greaterP, lesserP :: (Ord a) => InfoP a -> a -> InfoP Bool
+greaterP = liftP (>)
+lesserP = liftP (<)
