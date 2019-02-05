@@ -77,3 +77,10 @@ liftP comparator getter argument w x y z = (getter w x y z) `comparator` argumen
 greaterP, lesserP :: (Ord a) => InfoP a -> a -> InfoP Bool
 greaterP = liftP (>)
 lesserP = liftP (<)
+
+
+liftP2 :: (a -> b -> c) -> InfoP a -> InfoP b -> InfoP c
+liftP2 q f g w x y z = f w x y z `q` g w x y z
+
+andP = liftP2 (&&)
+orP = liftP2 (||)
